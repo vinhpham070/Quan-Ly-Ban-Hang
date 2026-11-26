@@ -28,7 +28,7 @@ A desktop/web application designed to streamline and automate daily sales operat
 
 ## Tech Stack
 
-- **Language:** C# (.NET Framework / .NET Core / .NET 8)
+- **Language:** C# (.NET Framework / .NET Core / .NET 10)
 - **UI Framework:** Windows Forms (WinForms) / WPF *(update based on your project)*
 - **Database:** Microsoft SQL Server
 - **ORM / Data Access:** Entity Framework / ADO.NET
