@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuanLyBanHang;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -21,5 +22,79 @@ namespace QuanLyBanHang
         {
             InitializeComponent();
         }
+
+        private void DgBill_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+        private void HienThiMenu()
+        {
+            QuanLyController quanLyController = new QuanLyController();
+            LstMenu.ItemsSource = quanLyController.LayTatCaMonAn().DefaultView;
+        }
+
+        private void HienThiBan()
+        {
+            QuanLyController quanLyController = new QuanLyController();
+            LstTables.ItemsSource = quanLyController.LayTatCaBan().DefaultView;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                HienThiBan();
+                HienThiMenu();
+            } 
+            catch (Exception ex) 
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void TxtSearchTable_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                if (TxtSearchTable.Text != null) 
+                {
+                    QuanLyController quanLyController = new QuanLyController();
+                    LstTables.ItemsSource = quanLyController.TimKiemBan(TxtSearchTable.Text).DefaultView;
+                    
+                } else
+                {
+                    HienThiBan();
+                }
+
+            } catch
+            {
+                throw;
+            }
+        }
+
+        private void TxtSearchMenu_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                if (TxtSearchMenu.Text != null)
+                {
+                    QuanLyController quanLyController = new QuanLyController();
+                    LstMenu.ItemsSource = quanLyController.TimKiemMonAn(TxtSearchMenu.Text).DefaultView;
+
+                }
+                else
+                {
+                    HienThiMenu();
+                }
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        
     }
 }

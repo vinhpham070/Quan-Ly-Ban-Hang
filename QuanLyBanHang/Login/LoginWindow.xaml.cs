@@ -1,22 +1,14 @@
-﻿using QuanLyBanHang.Class;
-using System.Text;
+﻿using QuanLyBanHang;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace QuanLyBanHang
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class LoginWindow : Window
     {
+        private bool _isSyncing = false;
+
         public LoginWindow()
         {
             InitializeComponent();
@@ -36,9 +28,7 @@ namespace QuanLyBanHang
                     MessageBox.Show("Dang nhap thanh cong!");
 
                     Window1 main = new Window1();
-
                     main.Show();
-
                     this.Close();
                 }
                 else
@@ -53,6 +43,44 @@ namespace QuanLyBanHang
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+    
+
+        // --- 3 hàm xử lý nút con mắt hiện/ẩn mật khẩu ---
+        private void btnTogglePass_Changed(object sender, RoutedEventArgs e)
+        {
+            if (btnTogglePass.IsChecked == true)
+            {
+                tbPasswordVisible.Text = tbPassword.Password;
+                tbPassword.Visibility = Visibility.Collapsed;
+                tbPasswordVisible.Visibility = Visibility.Visible;
+                tbPasswordVisible.Focus();
+                tbPasswordVisible.CaretIndex = tbPasswordVisible.Text.Length;
+            }
+            else
+            {
+                tbPassword.Password = tbPasswordVisible.Text;
+                tbPasswordVisible.Visibility = Visibility.Collapsed;
+                tbPassword.Visibility = Visibility.Visible;
+                tbPassword.Focus();
+            }
+        }
+
+        private void tbPassword_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (_isSyncing) return;
+            _isSyncing = true;
+            tbPasswordVisible.Text = tbPassword.Password;
+            _isSyncing = false;
+        }
+
+        private void tbPasswordVisible_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_isSyncing) return;
+            _isSyncing = true;
+            tbPassword.Password = tbPasswordVisible.Text;
+            _isSyncing = false;
         }
     }
 }

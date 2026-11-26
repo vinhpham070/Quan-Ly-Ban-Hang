@@ -5,8 +5,486 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QuanLyBanHang"
         mc:Ignorable="d"
-        Title="Window1" Height="450" Width="800">
+        Title="Quản Lý Bán Hàng" Height="650" Width="1050"
+        MinHeight="580" MinWidth="950"
+        WindowStartupLocation="CenterScreen" Background="#F5F7FA" Loaded="Window_Loaded" >
+
+    <Window.Resources>
+        <!-- Primary Blue Button Style (Matches Login Button) -->
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#2563EB"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4" Padding="12,8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#1D4ED8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Secondary Gray Button Style (Matches Thoát Button) -->
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#E5E7EB"/>
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4" Padding="12,8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#D1D5DB"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Danger Delete Button Style -->
+        <Style x:Key="DangerButtonStyle" TargetType="Button" BasedOn="{StaticResource SecondaryButtonStyle}">
+            <Setter Property="Background" Value="#FEE2E2"/>
+            <Setter Property="Foreground" Value="#DC2626"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FECACA"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Drawer Menu Item Style -->
+        <Style x:Key="DrawerItemStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#1E293B"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="20,14"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#EFF6FF"/>
+                                <Setter Property="Foreground" Value="#2563EB"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Clean Search Bar Style with Built-in Placeholder (Tag) -->
+        <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#1E293B"/>
+            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="SearchBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <Grid Margin="8,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Search Icon -->
+                                <TextBlock Grid.Column="0" Text="🔍" FontSize="12" Foreground="#94A3B8"
+                                           VerticalAlignment="Center" Margin="0,0,6,0"/>
+
+                                <!-- Editable Text Area -->
+                                <ScrollViewer x:Name="PART_ContentHost" Grid.Column="1" VerticalAlignment="Center"/>
+
+                                <!-- Placeholder Text from Tag -->
+                                <TextBlock x:Name="PlaceholderText" Grid.Column="1"
+                                           Text="{TemplateBinding Tag}"
+                                           Foreground="#94A3B8"
+                                           FontSize="13"
+                                           Margin="2,0,0,0"
+                                           VerticalAlignment="Center"
+                                           IsHitTestVisible="False"
+                                           Visibility="Collapsed"/>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter TargetName="PlaceholderText" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="SearchBorder" Property="BorderBrush" Value="#2563EB"/>
+                                <Setter TargetName="SearchBorder" Property="Background" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
     <Grid>
-        
+        <!-- ==================== MAIN CONTENT LAYER ==================== -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="56"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- TOP BAR (Hamburger + Date) -->
+        <Border Grid.Row="0" Background="White" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Padding="16,0">
+            <Grid>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="BtnMenu" Width="40" Height="40"
+                            Background="Transparent" BorderThickness="0" Cursor="Hand" ToolTip="Menu">
+                        <StackPanel VerticalAlignment="Center">
+                            <Border Height="2.5" Width="20" Background="#1E3A8A" Margin="0,2"/>
+                            <Border Height="2.5" Width="20" Background="#1E3A8A" Margin="0,2"/>
+                            <Border Height="2.5" Width="20" Background="#1E3A8A" Margin="0,2"/>
+                        </StackPanel>
+                    </Button>
+                    <TextBlock Text="HỆ THỐNG BÁN HÀNG" FontSize="17" FontWeight="Bold"
+                               Foreground="#1E3A8A" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                </StackPanel>
+
+                <!-- Date Display on the Right -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBlock Text="Ngày: " FontSize="14" FontWeight="SemiBold" Foreground="#64748B"/>
+                    <TextBlock x:Name="TxtCurrentDate" Text="26/11/2026" FontSize="14" FontWeight="Bold" Foreground="#1E3A8A"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- 3-COLUMN WORKSPACE -->
+        <Grid Grid.Row="1" Margin="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="320"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- COLUMN 1: TABLES LIST -->
+            <Border Grid.Column="0" Background="White" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="44"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Header -->
+                    <Border Grid.Row="0" Background="#F1F5F9" CornerRadius="8,8,0,0" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Padding="14,0">
+                        <TextBlock Text="DANH SÁCH BÀN" FontWeight="Bold" Foreground="#1E3A8A" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <!-- Search Bar -->
+                    <Border Grid.Row="1" Padding="8,8,8,4">
+                        <TextBox x:Name="TxtSearchTable" Style="{StaticResource SearchTextBoxStyle}" Tag="Tìm bàn..." TextChanged="TxtSearchTable_TextChanged"/>
+                    </Border>
+
+                    <!-- List -->
+                    <ListBox x:Name="LstTables" Grid.Row="2" BorderThickness="0" Padding="8,4,8,8" DisplayMemberPath="TenBan" SelectedValuePath="MaBan">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="12,10"/>
+                                <Setter Property="Margin" Value="0,0,0,6"/>
+                                <Setter Property="FontSize" Value="14"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border x:Name="Bd" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="6" Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="Bd" Property="Background" Value="#EFF6FF"/>
+                                                    <Setter TargetName="Bd" Property="BorderBrush" Value="#2563EB"/>
+                                                    <Setter TargetName="Bd" Property="BorderThickness" Value="2"/>
+                                                    <Setter Property="Foreground" Value="#1E3A8A"/>
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Bd" Property="BorderBrush" Value="#93C5FD"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <!-- COLUMN 2: MENU (DRINKS & FOOD) -->
+            <Border Grid.Column="2" Background="White" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="44"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Header -->
+                    <Border Grid.Row="0" Background="#F1F5F9" CornerRadius="8,8,0,0" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Padding="14,0">
+                        <TextBlock Text="THỰC ĐƠN (MÓN &amp; NƯỚC)" FontWeight="Bold" Foreground="#1E3A8A" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <!-- Search Bar -->
+                    <Border Grid.Row="1" Padding="8,8,8,4">
+                        <TextBox x:Name="TxtSearchMenu" Style="{StaticResource SearchTextBoxStyle}" Tag="Tìm món hoặc đồ uống..." TextChanged="TxtSearchMenu_TextChanged"/>
+                    </Border>
+
+                    <!-- List -->
+                    <ListBox x:Name="LstMenu" Grid.Row="2" BorderThickness="0" Padding="8,4,8,8"
+                             HorizontalContentAlignment="Stretch">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                <Setter Property="Padding" Value="8,6"/>
+                                <Setter Property="Margin" Value="0,0,0,4"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="4,2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" 
+                                               Text="{Binding TenMon}" 
+                                               FontWeight="SemiBold" 
+                                               FontSize="14" 
+                                               Foreground="#1E293B"
+                                               VerticalAlignment="Center"/>
+
+                                    <TextBlock Grid.Column="1" 
+                                               Text="{Binding DonGia, StringFormat={}{0:N0} VNĐ}" 
+                                               FontWeight="Bold" 
+                                               FontSize="13"
+                                               Foreground="#2563EB" 
+                                               VerticalAlignment="Center"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </Border>
+
+            <!-- COLUMN 3: BILLING SECTION -->
+            <Grid Grid.Column="4">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="12"/>
+                    <RowDefinition Height="44"/>
+                </Grid.RowDefinitions>
+
+                <!-- BILL CARD -->
+                <Border Grid.Row="0" Background="White" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="8">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="44"/>
+                            <!-- Billing Title Bar -->
+                            <RowDefinition Height="Auto"/>
+                            <!-- Search Bar -->
+                            <RowDefinition Height="*"/>
+                            <!-- Order Items DataGrid -->
+                            <RowDefinition Height="48"/>
+                            <!-- Total Money Bar -->
+                        </Grid.RowDefinitions>
+
+                        <!-- 1. BILLING TITLE BAR (Indicates Selected Table) -->
+                        <Border Grid.Row="0" Background="#1E3A8A" CornerRadius="8,8,0,0" Padding="16,0">
+                            <Grid>
+                                <TextBlock x:Name="TxtSelectedTableHeader"
+                                           Text="HÓA ĐƠN - BÀN 1"
+                                           Foreground="White"
+                                           FontWeight="Bold"
+                                           FontSize="15"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text="Nhấp vào cột SL để sửa"
+                                           Foreground="#BFDBFE"
+                                           FontSize="12"
+                                           HorizontalAlignment="Right"
+                                           VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- 2. BILL SEARCH BAR -->
+                        <Border Grid.Row="1" Background="White" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Padding="10,8">
+                            <TextBox x:Name="TxtSearchBill" Style="{StaticResource SearchTextBoxStyle}" Tag="Tìm món trong hóa đơn..."/>
+                        </Border>
+
+                        <!-- 3. LOCKED EXPANDING DATAGRID -->
+                        <DataGrid x:Name="DgBill" Grid.Row="2"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  CanUserResizeColumns="False"
+                                  CanUserResizeRows="False"
+                                  CanUserReorderColumns="False"
+                                  CanUserSortColumns="False"
+                                  HeadersVisibility="Column"
+                                  GridLinesVisibility="Horizontal"
+                                  HorizontalGridLinesBrush="#E2E8F0"
+                                  Background="White"
+                                  BorderThickness="0"
+                                  RowHeight="38"
+                                  FontSize="14" SelectionChanged="DgBill_SelectionChanged">
+                            <DataGrid.ColumnHeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Background" Value="#F8FAFC"/>
+                                    <Setter Property="Foreground" Value="#334155"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Height" Value="36"/>
+                                    <Setter Property="Padding" Value="12,0"/>
+                                    <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                </Style>
+                            </DataGrid.ColumnHeaderStyle>
+
+                            <DataGrid.Columns>
+                                <!-- Name Column expands to fill remaining space (3*) -->
+                                <DataGridTextColumn Header="Tên món"
+                                                    Binding="{Binding Name}"
+                                                    Width="3*"
+                                                    IsReadOnly="True">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                            <Setter Property="Padding" Value="12,0"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <!-- SL (Số lượng) Column expands proportionally (1.2*) and is clickable/editable -->
+                                <DataGridTextColumn Header="Số Lượng"
+                                                    Binding="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"
+                                                    Width="1.2*"
+                                                    IsReadOnly="False">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                            <Setter Property="Foreground" Value="#2563EB"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <!-- Price Column expands proportionally (1.5*) -->
+                                <DataGridTextColumn Header="Thành tiền"
+                                                    Binding="{Binding TotalFormatted}"
+                                                    Width="1.5*"
+                                                    IsReadOnly="True">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="VerticalAlignment" Value="Center"/>
+                                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                                            <Setter Property="Padding" Value="0,0,12,0"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <!-- 4. TOTAL AMOUNT BAR -->
+                        <Border Grid.Row="3" Background="#F1F5F9" BorderBrush="#CBD5E1" BorderThickness="0,1,0,0"
+                                CornerRadius="0,0,8,8" Padding="16,0">
+                            <Grid>
+                                <TextBlock Text="TỔNG CỘNG:" FontSize="15" FontWeight="Bold"
+                                           Foreground="#1E293B" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="TxtTotalMoney" Text="0 VNĐ" FontSize="18" FontWeight="Bold"
+                                           Foreground="#1E3A8A" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- ACTION BUTTONS ROW (Add, Delete, Finalize) -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="1.3*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button x:Name="BtnAddItem" Grid.Column="0" Content="+ Thêm món" Style="{StaticResource SecondaryButtonStyle}"/>
+                    <Button x:Name="BtnDeleteItem" Grid.Column="2" Content="Xóa món" Style="{StaticResource DangerButtonStyle}"/>
+                    <Button x:Name="BtnCheckout" Grid.Column="4" Content="Thanh toán" Style="{StaticResource PrimaryButtonStyle}"/>
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <!-- ==================== OVERLAY DRAWER MENU LAYER ==================== -->
+        <Grid x:Name="DrawerOverlay" Grid.RowSpan="2" Visibility="Collapsed" Panel.ZIndex="99">
+            <!-- Dimmed Background Backdrop -->
+            <Border x:Name="OverlayBackdrop" Background="#660F172A"/>
+
+            <!-- Left Slide-out Menu Panel -->
+            <Border Width="260" HorizontalAlignment="Left" Background="White" BorderBrush="#E2E8F0" BorderThickness="0,0,1,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="110"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Drawer Header -->
+                    <Border Grid.Row="0" Background="#1E3A8A" Padding="20">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="QUẢN LÝ QUÁN" Foreground="White" FontSize="18" FontWeight="Bold"/>
+                            <TextBlock Text="Xin chào, Admin" Foreground="#BFDBFE" FontSize="13" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Navigation Items -->
+                    <StackPanel Grid.Row="1" Margin="0,12">
+                        <Button x:Name="BtnAccount" Content="👤  Tài khoản (Account)" Style="{StaticResource DrawerItemStyle}"/>
+                        <Button x:Name="BtnQuanLy" Content="📊  Quản lý (Admin)" Style="{StaticResource DrawerItemStyle}"/>
+                    </StackPanel>
+
+                    <!-- Close Footer -->
+                    <Border Grid.Row="2" BorderBrush="#E2E8F0" BorderThickness="0,1,0,0" Padding="12">
+                        <Button x:Name="BtnCloseMenu" Content="Đóng Menu" Style="{StaticResource SecondaryButtonStyle}"/>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

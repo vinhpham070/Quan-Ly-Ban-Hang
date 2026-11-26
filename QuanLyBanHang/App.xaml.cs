@@ -11,6 +11,7 @@ namespace QuanLyBanHang
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            base.OnStartup(e);
             try
             {
                 DatabaseInitializer dbInit = new DatabaseInitializer();
