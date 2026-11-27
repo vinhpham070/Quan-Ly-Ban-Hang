@@ -35,7 +35,7 @@
 ### 2. Cấu hình Cơ sở dữ liệu (SQLite)
 Ứng dụng sử dụng SQLite nên không cần cài đặt thêm hệ quản trị cơ sở dữ liệu bên ngoài:
 
-1. Đảm bảo file cơ sở dữ liệu `QuanLyBanHang.db` *(sửa lại tên file `.db` thực tế của bạn)* nằm trong thư mục dự án và đã được thiết lập thuộc tính **Copy to Output Directory = Copy if newer** (hoặc **Copy always**) trong Visual Studio.
+1. Đảm bảo file cơ sở dữ liệu `QuanLy.db` *(sửa lại tên file `.db` thực tế của bạn)* nằm trong thư mục dự án và đã được thiết lập thuộc tính **Copy to Output Directory = Copy if newer** (hoặc **Copy always**) trong Visual Studio.
 2. Kiểm tra chuỗi kết nối trong project (ví dụ trong `App.config` hoặc lớp kết nối database):
    ```xml
    <connectionStrings>
