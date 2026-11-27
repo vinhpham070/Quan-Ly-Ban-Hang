@@ -1,64 +1,44 @@
-# QuanLyBanHang (Sales Management System / Hệ Thống Quản Lý Bán Hàng)
+# Hệ Thống Quản Lý Bán Hàng (POS System)
 
-**EN:** A desktop/web application designed to streamline and automate daily sales operations, inventory tracking, customer management, and revenue reporting.  
-**VI:** Ứng dụng desktop/web được thiết kế nhằm tối ưu hóa và tự động hóa quy trình bán hàng hằng ngày, theo dõi tồn kho, quản lý khách hàng và báo cáo doanh thu.
-
----
-
-## Table of Contents / Mục lục
-- [Features / Tính năng chính](#features--tính-năng-chính)
-- [Tech Stack / Công nghệ sử dụng](#tech-stack--công-nghệ-sử-dụng)
-- [Prerequisites / Yêu cầu hệ thống](#prerequisites--yêu-cầu-hệ-thống)
-- [Installation & Setup / Cài đặt & Khởi chạy](#installation--setup--cài-đặt--khởi-chạy)
-- [Database Configuration / Cấu hình cơ sở dữ liệu](#database-configuration--cấu-hình-cơ-sở-dữ-liệu)
-- [Project Structure / Cấu trúc thư mục](#project-structure--cấu-trúc-thư-mục)
-- [Screenshots / Hình ảnh minh họa](#screenshots--hình-ảnh-minh-họa)
-- [License / Giấy phép](#license--giấy-phép)
+Ứng dụng desktop hỗ trợ quản lý bán hàng tại quầy dành cho quán cà phê / nhà hàng, được xây dựng trên nền tảng **WPF (Windows Presentation Foundation)** và **C# (.NET)**.
 
 ---
 
-## Features / Tính năng chính
+## Tính năng chính
 
-- **Authentication & Authorization / Xác thực & Phân quyền:**  
-  - **EN:** Secure login system with role-based access control (Admin, Cashier/Staff).  
-  - **VI:** Hệ thống đăng nhập bảo mật với phân quyền theo vai trò (Quản trị viên, Thu ngân/Nhân viên).
-- **Product & Inventory Management / Quản lý Sản phẩm & Tồn kho:**  
-  - **EN:** Add, update, delete, and search products; track real-time stock levels and receive low-stock alerts.  
-  - **VI:** Thêm, sửa, xóa và tìm kiếm sản phẩm; theo dõi số lượng tồn kho theo thời gian thực và cảnh báo sắp hết hàng.
-- **Sales & Invoicing / Bán hàng & Xuất hóa đơn:**  
-  - **EN:** Fast order processing, barcode/product code lookup, discount calculation, and printable invoice generation.  
-  - **VI:** Xử lý đơn hàng nhanh chóng, tra cứu mã vạch/mã sản phẩm, tính chiết khấu và xuất hóa đơn in ấn.
-- **Customer & Supplier Management / Quản lý Khách hàng & Nhà cung cấp:**  
-  - **EN:** Maintain customer profiles, purchase history, and supplier records.  
-  - **VI:** Lưu trữ thông tin khách hàng, lịch sử mua hàng và hồ sơ nhà cung cấp.
-- **Reporting & Analytics / Báo cáo & Thống kê:**  
-  - **EN:** Visual dashboards and exportable reports for daily, monthly, and yearly revenue, best-selling items, and profit margins.  
-  - **VI:** Biểu đồ trực quan và xuất báo cáo doanh thu theo ngày/tháng/năm, sản phẩm bán chạy và biên lợi nhuận.
+* **Quản lý bàn trực quan:** Hiển thị danh sách bàn, tìm kiếm nhanh theo tên bàn và theo dõi trạng thái bàn đang phục vụ.
+* **Quản lý thực đơn (Món & Nước):** Danh sách món ăn/đồ uống kèm đơn giá rõ ràng, tích hợp thanh tìm kiếm tức thì.
+* **Xử lý hóa đơn (Order & Billing):**
+  * Tự động cập nhật hóa đơn tương ứng khi chọn từng bàn.
+  * Thêm món từ thực đơn vào hóa đơn, điều chỉnh trực tiếp số lượng ngay trên bảng (`DataGrid`) hoặc xóa món.
+  * Tự động tính tổng thành tiền theo thời gian thực.
+  * Thanh toán và lưu hóa đơn vào cơ sở dữ liệu.
 
 ---
 
-## Tech Stack / Công nghệ sử dụng
+## Công nghệ sử dụng
 
-- **Language / Ngôn ngữ:** C# (.NET 8 / .NET 10)
-- **UI Framework / Giao diện:** Windows Forms (WinForms) / WPF *(update based on your project / cập nhật theo dự án của bạn)*
-- **Database / Cơ sở dữ liệu:** SQLite
-- **ORM / Data Access / Truy xuất dữ liệu:** Entity Framework Core (`Microsoft.EntityFrameworkCore.Sqlite`) / `Microsoft.Data.Sqlite`
-- **Reporting / Báo cáo:** ClosedXML / RDLC *(if applicable / nếu có)*
-- **IDE:** Visual Studio 2022
+* **Ngôn ngữ:** C#
+* **Giao diện (UI):** WPF (XAML) với giao diện 3 cột (Danh sách bàn – Thực đơn – Hóa đơn).
+* **Cơ sở dữ liệu:** SQLite (thư viện `Microsoft.Data.Sqlite` hoặc `System.Data.SQLite`).
+* **IDE:** Visual Studio 2022
 
 ---
 
-## Prerequisites / Yêu cầu hệ thống
+## Hướng dẫn cài đặt và chạy dự án
 
-- [Visual Studio 2022](https://visualstudio.microsoft.com/) (with **.NET desktop development** workload / kèm gói **Phát triển ứng dụng desktop .NET**)
-- .NET SDK (version `[e.g., 8.0 / 10.0]`)
-- [DB Browser for SQLite](https://sqlitebrowser.org/) *(optional, for viewing/editing the `.db` file / tùy chọn, dùng để xem và chỉnh sửa file `.db`)*
+### 1. Yêu cầu hệ thống
+* Hệ điều hành Windows 10/11.
+* [.NET SDK](https://dotnet.microsoft.com/download) (phiên bản .NET 6.0 / .NET 8.0 hoặc .NET Framework 4.8 tùy cấu hình project).
+* Visual Studio 2022 (đã cài đặt workload **.NET desktop development**).
 
----
+### 2. Cấu hình Cơ sở dữ liệu (SQLite)
+Ứng dụng sử dụng SQLite nên không cần cài đặt thêm hệ quản trị cơ sở dữ liệu bên ngoài:
 
-## Installation & Setup / Cài đặt & Khởi chạy
-
-1. **Clone the repository / Tải mã nguồn về máy:**
-   ```bash
-   git clone [https://github.com/vinhpham070/Quan-Ly-Ban-Hang.git](https://github.com/vinhpham070/Quan-Ly-Ban-Hang.git)
-   cd Quan-Ly-Ban-Hang
+1. Đảm bảo file cơ sở dữ liệu `QuanLyBanHang.db` *(sửa lại tên file `.db` thực tế của bạn)* nằm trong thư mục dự án và đã được thiết lập thuộc tính **Copy to Output Directory = Copy if newer** (hoặc **Copy always**) trong Visual Studio.
+2. Kiểm tra chuỗi kết nối trong project (ví dụ trong `App.config` hoặc lớp kết nối database):
+   ```xml
+   <connectionStrings>
+       <add name="DefaultConnection" 
+            connectionString="Data Source=QuanLyBanHang.db;Version=3;" />
+   </connectionStrings>
