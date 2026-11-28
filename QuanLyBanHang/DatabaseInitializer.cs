@@ -64,7 +64,7 @@ namespace QuanLyBanHang
                 CREATE TABLE IF NOT EXISTS HoaDon (
                     MaHD INTEGER PRIMARY KEY AUTOINCREMENT,
                     MaBan INTEGER NOT NULL,
-                    NgayLap TEXT NOT NULL,
+                    NgayTao TEXT NOT NULL,
                     TongTien REAL NOT NULL DEFAULT 0 CHECK (TongTien >= 0),
                     TrangThai INTEGER NOT NULL DEFAULT 0 CHECK (TrangThai IN (0, 1)),
                     FOREIGN KEY (MaBan) REFERENCES Ban(MaBan)

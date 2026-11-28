@@ -4,7 +4,7 @@ using System.Text;
 
 namespace QuanLyBanHang.Class
 {
-    class Table
+    class Ban
     {
 
         int _maBan;

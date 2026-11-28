@@ -25,14 +25,14 @@ namespace QuanLyBanHang
                 bool kq = dn.KiemTraDangNhap(user);
                 if (kq)
                 {
-                    MessageBox.Show("Dang nhap thanh cong!");
+                    MessageBox.Show("Đăng nhập thành công!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
 
                     Window1 main = new Window1();
                     main.Show();
                     this.Close();
                 }
                 else
-                    MessageBox.Show("Sai mat khau hoac user!");
+                    MessageBox.Show("Sai mật khẩu hoặc user!", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
             catch (Exception ex)
             {

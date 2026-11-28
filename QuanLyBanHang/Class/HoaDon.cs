@@ -8,13 +8,13 @@ namespace QuanLyBanHang.Class
     {
         int _maHD;
         int _maBan;
-        string? _ngayLap;
+        string? _ngayTao;
         double _tongTien;
         int _trangThai;
 
         public int MaHD { get => _maHD; set => _maHD = value; }
         public int MaBan { get => _maBan; set => _maBan = value; }
-        public string? NgayLap { get => _ngayLap; set => _ngayLap = value; }
+        public string? NgayLap { get => _ngayTao; set => _ngayTao = value; }
         public double TongTien
         {
             get => _tongTien;
